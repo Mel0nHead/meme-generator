@@ -4,7 +4,15 @@
   padding: 20px;
   border: 1px solid red;
 }
-
+/* TODO: get rid of this */
 .canvas {
   width: "100%";
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
 }
