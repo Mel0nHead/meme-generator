@@ -1,22 +1,56 @@
 const uploadImage = document.querySelector("#upload-image");
 const fileInput = document.querySelector("#file-upload");
 const fileName = document.querySelector("#file-name");
-const displayImage = document.querySelector("#meme-display");
+const canvas = document.getElementById("canvas");
 
-uploadImage.addEventListener("click", function () {
+canvas.style.width = "100%";
+canvas.width = canvas.offsetWidth;
+
+const context = canvas.getContext("2d");
+
+function handleUploadImage() {
   if (fileInput) {
     fileInput.click();
   }
-});
+}
 
-fileInput.addEventListener("change", function () {
+function handleFileInputChange() {
   if (this.files && this.files.length) {
     const file = this.files[0];
-    displayImage.src = URL.createObjectURL(file);
-    // Saves memory
-    displayImage.onload = function () {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = function () {
+      const { offsetWidth } = canvas;
+      const resolution = this.width / this.height;
+      img.width = offsetWidth;
+      img.height = offsetWidth / resolution;
+      canvas.height = img.height;
+      canvas.style.height = `${canvas.height}px`;
+
+      console.log("image", img.width, img.height);
+      console.log("canvas", canvas.width, canvas.height);
+
+      context.drawImage(
+        img,
+        0,
+        0,
+        // img.width,
+        // img.height,
+        // 0,
+        // 0,
+        canvas.width,
+        canvas.height
+        // 0,
+        // 0,
+        // offsetWidth,
+        // offsetWidth / resolution
+      );
+      // For optimal performance and memory usage
       URL.revokeObjectURL(this.src);
     };
     fileName.textContent = file.name;
   }
-});
+}
+
+uploadImage.addEventListener("click", handleUploadImage);
+fileInput.addEventListener("change", handleFileInputChange);
