@@ -14,40 +14,30 @@ function handleUploadImage() {
   }
 }
 
+// Ensures that the canvas and image have matching dimensions
+function scaleImageAndCanvas(img) {
+  const { offsetWidth } = canvas;
+  const resolution = img.width / img.height;
+
+  img.width = offsetWidth;
+  img.height = offsetWidth / resolution;
+  canvas.height = img.height;
+  canvas.style.height = `${canvas.height}px`;
+}
+
 function handleFileInputChange() {
   if (this.files && this.files.length) {
     const file = this.files[0];
     const img = new Image();
+
     img.src = URL.createObjectURL(file);
     img.onload = function () {
-      const { offsetWidth } = canvas;
-      const resolution = this.width / this.height;
-      img.width = offsetWidth;
-      img.height = offsetWidth / resolution;
-      canvas.height = img.height;
-      canvas.style.height = `${canvas.height}px`;
-
-      console.log("image", img.width, img.height);
-      console.log("canvas", canvas.width, canvas.height);
-
-      context.drawImage(
-        img,
-        0,
-        0,
-        // img.width,
-        // img.height,
-        // 0,
-        // 0,
-        canvas.width,
-        canvas.height
-        // 0,
-        // 0,
-        // offsetWidth,
-        // offsetWidth / resolution
-      );
+      scaleImageAndCanvas(img);
+      context.drawImage(this, 0, 0, canvas.width, canvas.height);
       // For optimal performance and memory usage
       URL.revokeObjectURL(this.src);
     };
+
     fileName.textContent = file.name;
   }
 }
