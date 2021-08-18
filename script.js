@@ -75,13 +75,15 @@ function redrawToCanvas() {
 }
 
 function isMouseWithinTextCoordinates(mouseX, mouseY, text) {
-  const textWidth = context.measureText(text.text).width;
+  const { width, actualBoundingBoxAscent, actualBoundingBoxDescent } =
+    context.measureText(text.text);
+  const height = actualBoundingBoxAscent - actualBoundingBoxDescent;
 
   return (
     mouseX >= text.x &&
-    mouseX <= text.x + textWidth &&
+    mouseX <= text.x + width &&
     mouseY <= text.y &&
-    mouseY >= text.y - text.height
+    mouseY >= text.y - height
   );
 }
 
@@ -95,9 +97,6 @@ function handleAddText() {
     x: 20,
     y,
   };
-
-  // TODO: fix height calculation as it seems a bit inaccurate
-  textObj.height = 30;
 
   customTexts.push(textObj);
   redrawToCanvas();
@@ -114,15 +113,33 @@ function handleCanvasMouseOut(e) {
 }
 
 function handleCanvasMouseDown(e) {
-  mouseStartX = e.clientX - canvas.offsetLeft;
-  mouseStartY = e.clientY - canvas.offsetTop;
+  mouseStartX = parseInt(e.clientX - canvas.offsetLeft);
+  mouseStartY = parseInt(e.clientY - canvas.offsetTop);
 
-  customTexts.forEach((text) => {
+  customTexts.forEach((text, i) => {
     if (isMouseWithinTextCoordinates(mouseStartX, mouseStartY, text)) {
-      console.log(text);
+      selectedTextIndex = i;
     }
   });
 }
+
+canvas.addEventListener("mousemove", function (e) {
+  if (selectedTextIndex < 0) return;
+
+  const mouseX = parseInt(e.clientX - canvas.offsetLeft);
+  const mouseY = parseInt(e.clientY - canvas.offsetTop);
+
+  const changeX = mouseX - mouseStartX;
+  const changeY = mouseY - mouseStartY;
+  mouseStartX = mouseX;
+  mouseStartY = mouseY;
+
+  const text = customTexts[selectedTextIndex];
+  text.x += changeX;
+  text.y += changeY;
+
+  redrawToCanvas();
+});
 
 canvas.addEventListener("mouseup", handleCanvasMouseUp);
 canvas.addEventListener("mouseout", handleCanvasMouseOut);
