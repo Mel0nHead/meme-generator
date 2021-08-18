@@ -7,8 +7,7 @@ const addTextInput = editMemeControls.querySelector("input");
 const addTextButton = editMemeControls.querySelector("button");
 
 // TODO:
-// need to work out how to make text draggable: http://jsfiddle.net/m1erickson/9xAGa/
-// should we use img or canvas? just thinking about exporting
+// should layer a canvas on top of an image: https://stackoverflow.com/questions/18431332/delete-only-text-but-not-the-image-using-canvas
 // could use ImgFlip API
 
 const customTexts = [];
@@ -68,7 +67,7 @@ function handleFileInputChange() {
   }
 }
 
-function redrawToCanvas() {
+function redrawCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   const imgSrc = URL.createObjectURL(file);
   drawImageToCanvas(imgSrc, customTexts);
@@ -99,7 +98,7 @@ function handleAddText() {
   };
 
   customTexts.push(textObj);
-  redrawToCanvas();
+  redrawCanvas();
 }
 
 function handleCanvasMouseUp(e) {
@@ -123,7 +122,7 @@ function handleCanvasMouseDown(e) {
   });
 }
 
-canvas.addEventListener("mousemove", function (e) {
+function handleCanvasMouseMove(e) {
   if (selectedTextIndex < 0) return;
 
   const mouseX = parseInt(e.clientX - canvas.offsetLeft);
@@ -138,9 +137,10 @@ canvas.addEventListener("mousemove", function (e) {
   text.x += changeX;
   text.y += changeY;
 
-  redrawToCanvas();
-});
+  redrawCanvas();
+}
 
+canvas.addEventListener("mousemove", handleCanvasMouseMove);
 canvas.addEventListener("mouseup", handleCanvasMouseUp);
 canvas.addEventListener("mouseout", handleCanvasMouseOut);
 canvas.addEventListener("mousedown", handleCanvasMouseDown);
