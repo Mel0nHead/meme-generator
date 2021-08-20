@@ -2,11 +2,22 @@
   width: 700px;
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid red;
 }
-/* TODO: get rid of this */
+
+.canvas-wrapper {
+  position: relative;
+}
+
 .canvas {
-  width: "100%";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#uploaded-image {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .hidden {
@@ -15,4 +26,13 @@
 
 .visible {
   display: block;
+}
+
+.upload-image-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+#upload-image {
+  margin-right: 16px;
 }

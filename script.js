@@ -4,11 +4,10 @@ const fileName = document.querySelector("#file-name");
 const canvas = document.getElementById("canvas");
 const editMemeControls = document.getElementById("edit-meme");
 const addTextInput = editMemeControls.querySelector("input");
-const addTextButton = editMemeControls.querySelector("button");
+const addTextButton = editMemeControls.querySelector("#add-text-button");
+const img = document.querySelector("#uploaded-image");
 
-// TODO:
-// should layer a canvas on top of an image: https://stackoverflow.com/questions/18431332/delete-only-text-but-not-the-image-using-canvas
-// could use ImgFlip API
+// TODO: add download functionality
 
 const customTexts = [];
 // Used to track the beginning position of the mouse when the user starts dragging text
@@ -38,24 +37,22 @@ function scaleImageAndCanvas(img) {
   canvas.style.height = `${canvas.height}px`;
 }
 
-function drawImageToCanvas(src, textArray) {
-  const img = new Image();
+function drawImageToCanvas(src) {
   img.src = src;
 
   img.onload = function () {
     scaleImageAndCanvas(img);
-    context.drawImage(this, 0, 0, canvas.width, canvas.height);
     editMemeControls.classList.add("visible");
-    if (textArray && Array.isArray(textArray)) {
-      context.font = "30px verdana";
-
-      textArray.forEach(({ text, x, y }) => {
-        context.fillText(text, x, y);
-      });
-    }
     // For optimal performance and memory usage
     URL.revokeObjectURL(this.src);
   };
+}
+
+function drawTextToCanvas(textArray) {
+  context.font = "30px verdana";
+  textArray.forEach(({ text, x, y }) => {
+    context.fillText(text, x, y);
+  });
 }
 
 function handleFileInputChange() {
@@ -69,8 +66,7 @@ function handleFileInputChange() {
 
 function redrawCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
-  const imgSrc = URL.createObjectURL(file);
-  drawImageToCanvas(imgSrc, customTexts);
+  drawTextToCanvas(customTexts);
 }
 
 function isMouseWithinTextCoordinates(mouseX, mouseY, text) {
@@ -112,8 +108,9 @@ function handleCanvasMouseOut(e) {
 }
 
 function handleCanvasMouseDown(e) {
-  mouseStartX = parseInt(e.clientX - canvas.offsetLeft);
-  mouseStartY = parseInt(e.clientY - canvas.offsetTop);
+  const { left, top } = canvas.getBoundingClientRect();
+  mouseStartX = parseInt(e.clientX - left);
+  mouseStartY = parseInt(e.clientY - top);
 
   customTexts.forEach((text, i) => {
     if (isMouseWithinTextCoordinates(mouseStartX, mouseStartY, text)) {
@@ -125,8 +122,9 @@ function handleCanvasMouseDown(e) {
 function handleCanvasMouseMove(e) {
   if (selectedTextIndex < 0) return;
 
-  const mouseX = parseInt(e.clientX - canvas.offsetLeft);
-  const mouseY = parseInt(e.clientY - canvas.offsetTop);
+  const { left, top } = canvas.getBoundingClientRect();
+  const mouseX = parseInt(e.clientX - left);
+  const mouseY = parseInt(e.clientY - top);
 
   const changeX = mouseX - mouseStartX;
   const changeY = mouseY - mouseStartY;

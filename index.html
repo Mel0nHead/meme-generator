@@ -11,19 +11,25 @@
     <div class="container">
       <h1>Meme Generator</h1>
       <div>
+        <div>
+          <div class="upload-image-wrapper">
+            <button id="upload-image">Upload image</button>
+            <p id="file-name">No image selected</p>
+          </div>
+          <input type="file" id="file-upload" accept="image/*" hidden />
+        </div>
         <div id="edit-meme" class="hidden">
           <p>
             Add text to your meme, and then drag it to wherever you want the
             text to go.
           </p>
-          <input type="text" placeholder="Add some text to your meme" />
-          <button>Add text to meme</button>
+          <input type="text" placeholder="Add text" />
+          <button id="add-text-button">Add text to meme</button>
+          <button id="download">Download</button>
         </div>
-        <canvas id="canvas" class="canvas"></canvas>
-        <div>
-          <button id="upload-image">Upload image</button>
-          <p id="file-name">No image selected</p>
-          <input type="file" id="file-upload" accept="image/*" hidden />
+        <div class="canvas-wrapper">
+          <img id="uploaded-image" alt="Uploaded image" />
+          <canvas id="canvas" class="canvas"></canvas>
         </div>
       </div>
     </div>
