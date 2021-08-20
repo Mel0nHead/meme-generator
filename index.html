@@ -6,26 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meme Generator</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Materialize CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="content-container">
       <h1>Meme Generator</h1>
       <div>
-        <div>
-          <div class="upload-image-wrapper">
-            <button id="upload-image">Upload image</button>
-            <p id="file-name">No image selected</p>
+        <form action="#">
+          <div class="file-field input-field">
+            <div class="btn">
+              <span>Upload</span>
+              <input type="file" id="file-upload" accept="image/*" />
+            </div>
+            <div class="file-path-wrapper">
+              <input
+                class="file-path validate"
+                type="text"
+                placeholder="Upload an image"
+              />
+            </div>
           </div>
-          <input type="file" id="file-upload" accept="image/*" hidden />
-        </div>
+        </form>
         <div id="edit-meme" class="hidden">
           <p>
             Add text to your meme, and then drag it to wherever you want the
             text to go.
           </p>
-          <input type="text" placeholder="Add text" />
-          <button id="add-text-button">Add text to meme</button>
-          <button id="download">Download</button>
+          <div class="add-text-wrapper">
+            <div class="input-field add-text-input">
+              <input id="add-text-field" type="text" />
+              <label for="add-text-field">Add text to meme</label>
+            </div>
+            <div>
+              <button id="add-text-button" class="btn">Add text</button>
+            </div>
+          </div>
+          <button id="download" class="btn">Download</button>
         </div>
         <div class="canvas-wrapper">
           <img id="uploaded-image" alt="Uploaded image" />

@@ -1,4 +1,4 @@
-.container {
+.content-container {
   width: 700px;
   margin: 0 auto;
   padding: 20px;
@@ -28,11 +28,19 @@
   display: block;
 }
 
-.upload-image-wrapper {
+#upload-image {
+  margin-right: 16px;
+}
+
+.add-text-wrapper {
   display: flex;
   align-items: center;
 }
 
-#upload-image {
-  margin-right: 16px;
+.add-text-input {
+  width: 100%;
+}
+
+#add-text-button {
+  margin-left: 16px;
 }

@@ -1,12 +1,16 @@
 const uploadImage = document.querySelector("#upload-image");
 const fileInput = document.querySelector("#file-upload");
-const fileName = document.querySelector("#file-name");
 const canvas = document.getElementById("canvas");
 const editMemeControls = document.getElementById("edit-meme");
 const addTextInput = editMemeControls.querySelector("input");
 const addTextButton = editMemeControls.querySelector("#add-text-button");
 const img = document.querySelector("#uploaded-image");
 const downloadButton = document.querySelector("#download");
+
+// TODO:
+// improve styling
+// more intuitive UX
+// clean up CSS classes
 
 const customTexts = [];
 // Used to track the beginning position of the mouse when the user starts dragging text
@@ -18,12 +22,6 @@ canvas.width = canvas.offsetWidth;
 const context = canvas.getContext("2d");
 
 let file;
-
-function handleUploadImage() {
-  if (fileInput) {
-    fileInput.click();
-  }
-}
 
 // Ensures that the canvas and image have matching dimensions
 function scaleImageAndCanvas(img) {
@@ -59,7 +57,6 @@ function handleFileInputChange() {
     file = this.files[0];
     const imgSrc = URL.createObjectURL(file);
     drawImageToCanvas(imgSrc);
-    fileName.textContent = file.name;
   }
 }
 
@@ -158,5 +155,4 @@ canvas.addEventListener("mouseup", handleCanvasMouseUp);
 canvas.addEventListener("mouseout", handleCanvasMouseOut);
 canvas.addEventListener("mousedown", handleCanvasMouseDown);
 addTextButton.addEventListener("click", handleAddText);
-uploadImage.addEventListener("click", handleUploadImage);
 fileInput.addEventListener("change", handleFileInputChange);
