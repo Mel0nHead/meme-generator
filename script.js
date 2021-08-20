@@ -6,8 +6,7 @@ const editMemeControls = document.getElementById("edit-meme");
 const addTextInput = editMemeControls.querySelector("input");
 const addTextButton = editMemeControls.querySelector("#add-text-button");
 const img = document.querySelector("#uploaded-image");
-
-// TODO: add download functionality
+const downloadButton = document.querySelector("#download");
 
 const customTexts = [];
 // Used to track the beginning position of the mouse when the user starts dragging text
@@ -64,8 +63,12 @@ function handleFileInputChange() {
   }
 }
 
-function redrawCanvas() {
+function redrawCanvas(shouldDrawImage = false) {
   context.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (shouldDrawImage) {
+    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }
   drawTextToCanvas(customTexts);
 }
 
@@ -138,6 +141,19 @@ function handleCanvasMouseMove(e) {
   redrawCanvas();
 }
 
+function handleDownloadMeme() {
+  redrawCanvas(true);
+  const imgUrl = canvas.toDataURL("image/jpeg", 1.0);
+  const a = document.createElement("a");
+  a.href = imgUrl;
+  // TODO: use the actual file name
+  a.download = "dls;kfjs;ldkfjsdlf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+downloadButton.addEventListener("click", handleDownloadMeme);
 canvas.addEventListener("mousemove", handleCanvasMouseMove);
 canvas.addEventListener("mouseup", handleCanvasMouseUp);
 canvas.addEventListener("mouseout", handleCanvasMouseOut);
