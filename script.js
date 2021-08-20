@@ -146,8 +146,7 @@ function handleDownloadMeme() {
   const imgUrl = canvas.toDataURL("image/jpeg", 1.0);
   const a = document.createElement("a");
   a.href = imgUrl;
-  // TODO: use the actual file name
-  a.download = "dls;kfjs;ldkfjsdlf";
+  a.download = "generated-meme";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
